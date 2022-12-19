@@ -109,10 +109,10 @@ SELECT
 	de.to_date
 INTO emp_info
 FROM employees AS e
-INNER JOIN salaries AS s
-ON (e.emp_no = s.emp_no)
-INNER JOIN dept_emp AS de
-ON (e.emp_no = de.emp_no)
+	INNER JOIN salaries AS s
+	  ON (e.emp_no = s.emp_no)
+	INNER JOIN dept_emp AS de
+	  ON (e.emp_no = de.emp_no)
 WHERE (e.birth_date BETWEEN '1952-01-01' AND '1955-12-31') 
 	AND (e.hire_date BETWEEN '1985-01-01' AND '1988-12-31')
 	AND (de.to_date = '9999-01-01')
@@ -136,7 +136,7 @@ FROM departments AS d
 	  ON (ce.emp_no = dm.emp_no)
 ;
 
--- 3) dept_retirees
+-- 3) dept_info
 SELECT
 	ce.emp_no,
 	ce.first_name,
@@ -148,4 +148,42 @@ INNER JOIN dept_emp AS de
 ON ce.emp_no = de.emp_no
 INNER JOIN departments AS d
 ON de.dept_no = d.dept_no
+;
+
+-- 4) Sales dept retirees
+SELECT *
+FROM departments;
+
+SELECT 
+	ri.emp_no,
+	ri.first_name,
+	ri.last_name,
+	d.dept_name
+INTO sales_info
+FROM retirement_info AS ri
+	INNER JOIN dept_emp AS de
+	 ON (ri.emp_no = de.emp_no)
+	INNER JOIN departments as d
+	 ON (de.dept_no = d.dept_no)
+WHERE de.to_date = ('9999-01-01')
+	AND d.dept_name = ('Sales')
+;
+
+-- 4) Sales and dev dept retirees
+SELECT *
+FROM departments;
+
+SELECT 
+	ri.emp_no,
+	ri.first_name,
+	ri.last_name,
+	d.dept_name
+INTO sales_dev_info
+FROM retirement_info AS ri
+	INNER JOIN dept_emp AS de
+	 ON (ri.emp_no = de.emp_no)
+	INNER JOIN departments as d
+	 ON (de.dept_no = d.dept_no)
+WHERE de.to_date = ('9999-01-01')
+	AND d.dept_name IN ('Sales', 'Development')
 ;
