@@ -39,3 +39,4 @@ dept_no varchar pk fk - Departments.dept_no
 emp_no int pk fk - Employees.emp_no
 from_date date
 to_date date
+s
